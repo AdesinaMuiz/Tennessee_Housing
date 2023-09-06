@@ -3,7 +3,6 @@ SELECT *
 FROM nashville_housing
 
 --Cleaning the Data
--- 56477 total records
 --Standardizing the Date Format
 
 SELECT SaleDate,CAST(SaleDate AS date)
