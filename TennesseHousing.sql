@@ -214,3 +214,20 @@ SELECT
 FROM #nashville_housing
 GROUP BY YEAR(Sales_Date)
 ORDER BY Total_Sale_Price DESC
+
+-- What are the annual revenue trends, is there any significant growth or decline during this period?
+WITH YearlyRevenue AS (
+    SELECT
+        YEAR(Sales_Date) AS Sale_Year,
+        SUM(SalePrice) AS Total_Revenue
+    FROM #nashville_housing
+    GROUP BY YEAR(Sales_Date)
+)
+
+SELECT
+    Sale_Year,
+    Total_Revenue,
+    LAG(Total_Revenue) OVER (ORDER BY Sale_Year) AS Previous_Year_Revenue,
+    ((Total_Revenue - LAG(Total_Revenue) OVER (ORDER BY Sale_Year)) * 100.0 / LAG(Total_Revenue) OVER (ORDER BY Sale_Year)) AS Percentage_Growth
+FROM YearlyRevenue
+ORDER BY Sale_Year
